@@ -119,52 +119,47 @@ const MindMap = ({ owner, name }) => {
       animate={{ opacity: 1 }}
       className="relative"
     >
-      {mermaidCode ? (
-        <div className="bg-gray-900 rounded-xl p-6 overflow-auto">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-white">
-              Contributor Roadmap
-            </h2>
-            <button
-              onClick={handleDownload}
-              className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition text-sm"
-            >
-              <Download className="w-4 h-4" />
-              <span>Download SVG</span>
-            </button>
+      <div className="rounded-xl p-8">
+        <div className="text-center space-y-6">
+          <div className="inline-flex p-4 rounded-full bg-white/20 backdrop-blur-sm">
+            <Download className="w-12 h-12 text-white" />
           </div>
           
-          <div 
-            ref={mermaidRef}
-            className="min-h-96 flex justify-center items-center bg-white rounded-lg p-4"
-          />
-        </div>
-      ) : (
-        <div className="rounded-xl p-8">
-          <div className="text-center space-y-6">
-            <div className="inline-flex p-4 rounded-full bg-white/20 backdrop-blur-sm">
-              <Download className="w-12 h-12 text-white" />
-            </div>
-            
-            <div>
-              <h2 className="text-2xl font-bold text-white mb-2">
-                Download Contributor Roadmap
-              </h2>
-              <p className="text-white/90">
-                Get a visual mind map of the repository structure and contribution paths
-              </p>
-            </div>
-
-            <button
-              onClick={handleDownload}
-              className="inline-flex items-center space-x-2 px-6 py-3 bg-white hover:bg-gray-100 text-blue-700 rounded-lg transition font-medium shadow-lg"
-            >
-              <Download className="w-5 h-5" />
-              <span>Download SVG</span>
-            </button>
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              Download Contributor Roadmap
+            </h2>
+            <p className="text-white/90">
+              Get a visual mind map of the repository structure and contribution paths
+            </p>
           </div>
+
+          <button
+            onClick={handleDownload}
+            disabled={!mermaidCode}
+            className={`inline-flex items-center space-x-2 px-6 py-3 rounded-lg transition font-medium shadow-lg ${
+              mermaidCode 
+                ? 'bg-white hover:bg-gray-100 text-blue-700' 
+                : 'bg-gray-500 cursor-not-allowed text-gray-300'
+            }`}
+          >
+            <Download className="w-5 h-5" />
+            <span>{mermaidCode ? 'Download SVG' : 'Roadmap Not Available'}</span>
+          </button>
+          
+          {!mermaidCode && (
+            <p className="text-gray-400 text-sm">
+              Analyze this repository first to generate the contributor roadmap
+            </p>
+          )}
         </div>
-      )}
+      </div>
+
+      {/* Hidden diagram for SVG generation */}
+      <div 
+        ref={mermaidRef}
+        className="hidden"
+      />
     </motion.div>
   );
 };
