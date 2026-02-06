@@ -11,7 +11,7 @@ export const config = {
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
     GITHUB_TOKEN: process.env.GITHUB_TOKEN,
     GROQ_API_KEY: process.env.GROQ_API_KEY,
-    FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5173'
+    FRONTEND_URL: process.env.FRONTEND_URL || 'https://contri-map.vercel.app'
 };
 
 console.log(' Config loaded - GitHub Token:', config.GITHUB_TOKEN ? 'YES' : 'NO');
