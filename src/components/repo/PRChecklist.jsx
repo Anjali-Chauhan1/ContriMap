@@ -31,12 +31,20 @@ const PRChecklist = ({ owner, name }) => {
       
       if (response.success && response.data.prPreparationHelp) {
         setChecklist(response.data.prPreparationHelp);
+      } else if (response.success && response.data.analysisStatus === 'completed') {
+        setError('PR preparation help not available for this repository.');
+      } else if (response.success && response.data.analysisStatus === 'processing') {
+        setError('Repository analysis is still in progress. Please wait and try again.');
       } else {
-        setChecklist(null);
+        setError('Repository not analyzed yet. Please analyze this repository first to get PR preparation help.');
       }
     } catch (err) {
       console.error('Error fetching PR checklist:', err);
-      setError('Failed to load PR preparation help');
+      if (err.response?.status === 404) {
+        setError('Repository not found or not analyzed yet. Please analyze this repository first.');
+      } else {
+        setError('Failed to load PR preparation help. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -55,15 +63,25 @@ const PRChecklist = ({ owner, name }) => {
 
   if (error || !checklist) {
     return (
-      <div className="bg-[#1a2333] border border-[#2d3748] rounded-xl flex flex-col items-center justify-center py-12 px-6 text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-[#1a2333] border border-[#2d3748] rounded-xl flex flex-col items-center justify-center py-12 px-6 text-center"
+      >
         <div className="p-3 rounded-full bg-yellow-500/10 mb-4 border border-yellow-500/20">
           <Info className="w-8 h-8 text-yellow-500" />
         </div>
         <h3 className="text-xl font-semibold mb-2 text-white">No PR Checklist Available</h3>
-        <p className="text-gray-400 max-w-md">
+        <p className="text-gray-400 max-w-md mb-4">
           {error || 'The analysis for this repository is older and doesn\'t include the new PR Help data. Try re-analyzing the repository.'}
         </p>
-      </div>
+        <button
+          onClick={fetchChecklist}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition"
+        >
+          Try Again
+        </button>
+      </motion.div>
     );
   }
 

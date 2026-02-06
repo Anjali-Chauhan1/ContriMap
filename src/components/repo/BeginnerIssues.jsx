@@ -33,14 +33,26 @@ const BeginnerIssues = ({ owner, name }) => {
   const fetchIssues = async () => {
     try {
       setLoading(true);
+      setError('');
       const response = await repoAPI.getBeginnerIssues(owner, name);
       
       if (response.success) {
-        setIssues(response.data.slice(0, 6)); // Show top 6 issues
+        setIssues(response.data.slice(0, 6)); 
+        if (response.data.length === 0) {
+          setError('No beginner-friendly issues found. This repository may not have issues labeled as "good first issue" or similar.');
+        }
+      } else {
+        setError('Failed to fetch beginner issues. Repository may not exist or may be private.');
       }
     } catch (err) {
       console.error('Error fetching beginner issues:', err);
-      setError(err.response?.data?.message || 'Failed to load beginner issues');
+      if (err.response?.status === 404) {
+        setError('Repository not found. Please check if the repository exists and is public.');
+      } else if (err.response?.status === 403) {
+        setError('Access denied. This repository may be private or rate limit exceeded.');
+      } else {
+        setError('Failed to load beginner issues. Please try again later.');
+      }
     } finally {
       setLoading(false);
     }
@@ -53,10 +65,16 @@ const BeginnerIssues = ({ owner, name }) => {
       
       if (response.success) {
         setSelectedRoadmap(response.data);
+      } else {
+        console.error('Failed to generate roadmap:', response.message);
       }
     } catch (err) {
       console.error('Error generating roadmap:', err);
-      // Fail silently for now or show a toast
+      if (err.response?.status === 404) {
+        alert('Repository not analyzed yet. Please analyze the repository first to generate issue roadmaps.');
+      } else {
+        alert('Failed to generate roadmap. Please try again.');
+      }
     } finally {
       setRoadmapLoading(null);
     }
@@ -70,6 +88,30 @@ const BeginnerIssues = ({ owner, name }) => {
           <p className="text-gray-400">Finding beginner-friendly issues...</p>
         </div>
       </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6"
+      >
+        <div className="flex items-start space-x-3">
+          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <h3 className="font-semibold text-red-800 dark:text-red-200">Unable to Load Issues</h3>
+            <p className="text-sm text-red-600 dark:text-red-300 mt-1">{error}</p>
+            <button
+              onClick={fetchIssues}
+              className="mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </motion.div>
     );
   }
 
@@ -91,10 +133,11 @@ const BeginnerIssues = ({ owner, name }) => {
       </div>
 
       <div className="space-y-4 relative z-10">
-        {issues.length === 0 ? (
+        {issues.length === 0 && !error ? (
           <div className="text-center py-8">
             <AlertCircle className="w-12 h-12 text-gray-500 mx-auto mb-3" />
-            <p className="text-gray-400">No beginner-friendly issues found at the moment</p>
+            <p className="text-gray-400 mb-2">No beginner-friendly issues found</p>
+            <p className="text-gray-500 text-sm">This repository may not have issues labeled with "good first issue", "beginner-friendly", or similar tags.</p>
           </div>
         ) : (
           issues.map((issue, index) => (
