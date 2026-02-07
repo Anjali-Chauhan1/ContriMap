@@ -18,6 +18,8 @@ import TypewriterSequence from '../components/UI/TypewriterSequence';
 import InsightRobot from '../components/UI/ThreeD/InsightRobot';
 import Logo3D from '../components/UI/ThreeD/Logo3D';
 import LaserFlow from '../components/UI/LaserFlow/LaserFlow';
+import  LiquidEther from '../components/UI/LiquidEther/LiquidEther';
+
 
 const Home = ({ onIntroComplete }) => {
   const navigate = useNavigate();
@@ -31,28 +33,55 @@ const Home = ({ onIntroComplete }) => {
   return (
     <div className="min-h-screen bg-black">
       {/* Hero Section with LaserFlow Background */}
-      <section className="relative pt-32 pb-20 overflow-hidden min-h-screen bg-black">
+      <section className="relative pt-32 pb-20 overflow-hidden min-h-screen">
         {/* LaserFlow Background */}
-        <div className="absolute inset-0">
-          <LaserFlow 
-            color="#c3f7f9"
-            wispDensity={1.2}
-            fogIntensity={0.4}
-            wispSpeed={8}
-            flowSpeed={0.3}
-            horizontalBeamOffset={0.1}
-            verticalBeamOffset={0.0}
-            horizontalSizing={2}
-            verticalSizing={0.1}
-            wispIntensity={9.7}
-            flowStrength={0.11}
-            fogScale={0.3}
-            fogFallSpeed={0.86}
-            decay={0.81}
-            falloffStart={1.44}
-          />
+        <div className="absolute inset-x-0 bottom-[-27vh] pointer-events-none">
+          <div className="relative h-[55vh]">
+            <LaserFlow 
+              color="#c3f7f9"
+              wispDensity={3.2}
+              fogIntensity={0.4}
+              wispSpeed={3}
+              flowSpeed={0.01}
+              horizontalBeamOffset={0.1}
+              verticalBeamOffset={0.0}
+              horizontalSizing={6}
+              verticalSizing={7}
+              wispIntensity={5.7}
+              flowStrength={0.11}
+              fogScale={0.3}
+              fogFallSpeed={0.86}
+              decay={0.81}
+              falloffStart={2}
+            />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black via-black/80 to-transparent" />
+          </div>
         </div>
-        
+        {/* LiquidEther hero aura */}
+        <div
+          className="pointer-events-none absolute "
+          //aria-hidden="true"
+        >
+          <div
+            className="relative w-[min(150vw,1800px)] max-w-[1800px] -top-10 opacity-80 mix-blend-screen"
+            style={{ aspectRatio: '1 / 1', filter: 'drop-shadow(0 0 120px rgba(140,115,242,0.35))' }}
+          >
+            <LiquidEther
+              mouseForce={6}
+              cursorSize={100}
+              isViscous
+              viscous={30}
+              colors={["#8c73f2","#c8d4ee","#d9d0fb"]}
+              autoDemo
+              autoSpeed={1.5}
+              autoIntensity={4.6}
+              isBounce={false}
+              resolution={0.45}
+              className="w-full h-full"
+              style={{ width: '100%', height: '100%' }}
+            />
+          </div>
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -65,7 +94,7 @@ const Home = ({ onIntroComplete }) => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: showContent ? 1 : 0, scale: showContent ? 1 : 0.95 }}
               transition={{ duration: 1, ease: "easeInOut" }}
-              className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 mb-8"
+              className="inline-flex items-center space-x-2 px-4 py-2 mb-8"
             >
               <Sparkles className="w-4 h-4 text-yellow-400" />
               <span className="text-sm font-medium text-white">AI-Powered Open Source Assistant</span>
@@ -89,13 +118,13 @@ const Home = ({ onIntroComplete }) => {
                initial={{ opacity: 0, y: 20 }}
                animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 20 }}
                transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
-               className="flex flex-col sm:flex-row items-center justify-center gap-4"
+               className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/analyze')}
-                className="bg-white px-8 py-4 rounded-2xl font-medium text-black flex items-center justify-center space-x-2 text-lg hover:bg-gray-100 transition-all"
+                className="bg-white px-8 py-4 rounded-2xl font-medium text-black flex items-center justify-center space-x-2 text-lg hover:bg-gray-100 transition-all sm:mr-4"
               >
                 <span>Get Started</span>
               </motion.button>
@@ -103,7 +132,7 @@ const Home = ({ onIntroComplete }) => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/explore')}
+                onClick={() => navigate('/guide')}
                 className="bg-transparent border-2 border-white/20 px-8 py-4 rounded-2xl font-medium text-white/70 flex items-center justify-center space-x-2 text-lg hover:bg-white/5 transition-all"
               >
                 <span>Learn More</span>
@@ -205,7 +234,7 @@ const Home = ({ onIntroComplete }) => {
               >
                 <div className="flex items-center space-x-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                  <span>Real-time Code Explanations</span>
+                  <span>Beginner-Friendly Issues</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />

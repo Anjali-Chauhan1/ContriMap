@@ -5,7 +5,6 @@ import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import Analyze from './pages/Analyze';
 import RepoDetail from './pages/RepoDetail';
-import Explore from './pages/Explore';
 import Guide from './pages/Guide';
 import './index.css';
 
@@ -26,7 +25,6 @@ function AppContent() {
             <Route path="/" element={<Home onIntroComplete={() => setIntroComplete(true)} />} />
             <Route path="/analyze" element={<Analyze />} />
             <Route path="/repo/:owner/:name" element={<RepoDetail />} />
-            <Route path="/explore" element={<Explore />} />
             <Route path="/guide" element={<Guide />} />
           </Routes>
         </main>

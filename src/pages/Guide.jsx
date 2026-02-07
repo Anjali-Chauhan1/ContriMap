@@ -184,13 +184,13 @@ const Guide = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to="/analyze"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 rounded-xl font-bold text-white flex items-center gap-2 hover:scale-105 transition-all shadow-xl shadow-blue-500/20"
+              className="bg-white px-8 py-4 rounded-xl font-bold text-black flex items-center gap-2 hover:scale-105 transition-all shadow-xl shadow-blue-500/20"
             >
               <Lightbulb className="w-5 h-5" />
               Analyze a Repository
             </Link>
             <Link
-              to="/explore"
+              to="/analyze"
               className="bg-white/5 border border-white/10 px-8 py-4 rounded-xl font-bold text-white hover:bg-white/10 transition-all flex items-center gap-2"
             >
               Browse Examples

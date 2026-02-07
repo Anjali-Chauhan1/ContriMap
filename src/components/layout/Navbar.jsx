@@ -7,7 +7,6 @@ const Navbar = () => {
 
   const navItems = [
     { label: 'Home', href: '/' },
-    { label: 'Explore', href: '/explore' },
     { label: 'Guide', href: '/guide' },
   ];
 
@@ -22,7 +21,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="relative">
-              <div className="relative bg-gradient-to-r from-[#5227FF] to-[#FF9FFC] p-2 rounded-lg group-hover:opacity-80 transition-all">
+              <div className="relative bg-gradient-to-r from-[#6d4af7] to-[#5d7ad3] p-2 rounded-lg group-hover:opacity-80 transition-all">
                 <GitBranch className="w-6 h-6 text-white" />
               </div>
             </div>

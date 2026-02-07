@@ -67,7 +67,7 @@ const TypewriterSequence = ({ onComplete, lines: customLines, align = 'center' }
     },
     { 
       text: "Contribute with Confidence", 
-      className: "text-5xl md:text-7xl font-bold text-white",
+      className: "text-5xl md:text-7xl font-bold text-blue-200",
       delay: 800
     }
   ];
@@ -87,7 +87,7 @@ const TypewriterSequence = ({ onComplete, lines: customLines, align = 'center' }
   };
 
   return (
-    <div className={`min-h-[200px] flex flex-col ${align === 'left' ? 'items-start' : 'items-center'} justify-center`}>
+    <div className={`flex flex-col ${align === 'left' ? 'items-start' : 'items-center'} justify-center`}>
       {lines.map((line, index) => (
         <div key={index} className="mb-4">
           {index <= currentLine && (
