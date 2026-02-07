@@ -32,43 +32,55 @@ AI-assisted guide that analyzes any public GitHub repo, surfaces beginner-friend
 ### Quick Start
 
 ```bash
-git clone https://github.com/yourusername/ContriMap.git
+git clone https://github.com/Anjali-Chauhan1/ContriMap.git
 cd ContriMap
 
 # Backend
 cd backend
 npm install
-cp .env.example .env # or create manually
+cp .env.example .env 
 npm run dev
 
 # Frontend (new terminal at repo root)
 npm install
-cp .env.example .env
 npm run dev
 ```
 
 `backend` listens on http://localhost:5000, `frontend` on http://localhost:5173.
 
-### Environment Variables
-
-**Backend**
-
-| Key | Purpose | Example |
-| --- | --- | --- |
-| NODE_ENV | runtime mode | development |
-| PORT | API port | 5000 |
-| MONGODB_URI | Mongo connection | mongodb://localhost:27017/contrimap |
-| GITHUB_TOKEN | GitHub PAT | ghp_xxx |
-| GROQ_API_KEY | AI access | gsk_xxx |
-| FRONTEND_URL | CORS origin | http://localhost:5173 |
-
-**Frontend**
-
-| Key | Purpose | Example |
-| --- | --- | --- |
-| VITE_API_URL | Backend base URL | http://localhost:5000/api |
-
 ---
+
+## Project Structure
+
+```
+ContriMap/
+|- src/                      
+|  |- components/
+|  |  |- layout/              
+|  |  |- repo/                
+|  |  `- UI/                  
+|  |- pages/                  
+|  |- services/       
+|  |- hooks/
+|  |- lib/       
+|  `- utils/
+|- public/                    
+|- backend/
+|  |- src/
+|  |  |- controllers/        
+|  |  |- routes/              
+|  |  |- services/            
+|  |  |- analysis/            
+|  |  |- ai/aiService.js      
+|  |  |- github/client.js     
+|  |  |- queues/ 
+|  |  |- models/RepoAnalysis.js
+|  |  |- config.js | db.js    
+|  |  `- server.js           
+|  `- package.json
+`- components.json | vite.config.js | eslint.config.js
+```
+
 
 ## Usage
 
@@ -77,8 +89,6 @@ npm run dev
 3. **AI Insights**: review overview, stack summary, key modules, and architecture callouts.
 4. **Guide & Issues**: follow recommended onboarding steps, then claim surfaced beginner issues.
 5. **Explore**: browse trending repos, filter by topic, and trigger new analyses quickly.
-
-Tips: keep MongoDB and Redis running, and monitor worker logs under `backend/src/workers` for queue health.
 
 ---
 
@@ -92,51 +102,6 @@ Tips: keep MongoDB and Redis running, and monitor worker logs under `backend/src
 | DX | npm, nodemon, ESLint, Prettier |
 
 Key dependencies and scripts live inside [`package.json`](package.json) and [`backend/package.json`](backend/package.json).
-
----
-
-## Project Structure
-
-```
-ContriMap/
-├── src/                # React app (components, pages, hooks, services)
-├── public/             # Static assets
-├── backend/
-│   ├── src/
-│   │   ├── analysis/   # structure + mind map builders
-│   │   ├── ai/         # Groq integration
-│   │   ├── controllers/routes/services
-│   │   ├── queues/workers
-│   │   └── server.js   # Express bootstrap
-│   └── package.json
-├── API.md | SETUP.md | DEPLOYMENT.md
-└── README.md
-```
-
----
-
-## API Endpoints
-
-**Repository (`/api/repos`)**
-
-| Method | Path | Description |
-| --- | --- | --- |
-| POST | /api/repos/analyze | Queue a new analysis job |
-| GET | /api/repos/analysis/:id/status | Check job status |
-| GET | /api/repos/:owner/:name | Fetch analysis summary |
-| GET | /api/repos/:owner/:name/issues/beginner | List curated issues |
-| GET | /api/repos/search | Search repos by topic |
-
-**Analysis (`/api/analysis`)**
-
-| Method | Path | Description |
-| --- | --- | --- |
-| GET | /api/analysis/:owner/:name/mindmap | Graph data for ReactFlow |
-| GET | /api/analysis/:owner/:name/insights | AI insight payload |
-| GET | /api/analysis/:owner/:name/guide | Contribution guide text |
-| POST | /api/analysis/:owner/:name/pr-checklist | Generate checklist |
-
-Detailed payload schemas live in [API.md](API.md).
 
 ---
 
@@ -161,7 +126,7 @@ Issue ideas include bug fixes, feature enhancements, documentation polish, perfo
 ## License & Support
 
 - Licensed under MIT. See [LICENSE](LICENSE).
-- Questions or proposals? [Open an issue](https://github.com/yourusername/ContriMap/issues) or start a discussion.
+- Questions or proposals? [Open an issue](https://github.com/AnjaliContriMap/issues) or start a discussion.
 - Extra references: [SETUP.md](SETUP.md) for deeper installation notes, [DEPLOYMENT.md](DEPLOYMENT.md) for hosting tips.
 
 ---
