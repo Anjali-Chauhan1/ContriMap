@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Float, PerspectiveCamera, ContactShadows, Environment } from '@react-three/drei';
 import * as THREE from 'three';
@@ -111,10 +111,29 @@ const Logo = () => {
   );
 };
 
-const Logo3D = () => {
+const Logo3D = memo(() => {
   return (
     <div className="w-full h-[600px] flex items-center justify-center bg-transparent">
-      <Canvas shadows dpr={[1, 2]} gl={{ alpha: true }}>
+      <Canvas 
+        shadows 
+        dpr={[1, 1.5]} 
+        performance={{ min: 0.5 }}
+        gl={{ 
+          alpha: true,
+          preserveDrawingBuffer: true,
+          powerPreference: 'high-performance'
+        }}
+        onCreated={({ gl }) => {
+          const canvas = gl.getContext().canvas;
+          canvas.addEventListener('webglcontextlost', (event) => {
+            event.preventDefault();
+            console.warn('WebGL context lost - Logo3D');
+          }, false);
+          canvas.addEventListener('webglcontextrestored', () => {
+            console.log('WebGL context restored - Logo3D');
+          }, false);
+        }}
+      >
         <PerspectiveCamera makeDefault position={[0, 0, 35]} fov={45} />
         
       
@@ -141,6 +160,8 @@ const Logo3D = () => {
       </Canvas>
     </div>
   );
-};
+});
+
+Logo3D.displayName = 'Logo3D';
 
 export default Logo3D;

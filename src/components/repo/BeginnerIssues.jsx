@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Loader2, 
@@ -26,11 +26,7 @@ const BeginnerIssues = ({ owner, name }) => {
   const [roadmapLoading, setRoadmapLoading] = useState(null);
   const [selectedRoadmap, setSelectedRoadmap] = useState(null);
 
-  useEffect(() => {
-    fetchIssues();
-  }, [owner, name]);
-
-  const fetchIssues = async () => {
+  const fetchIssues = useCallback(async () => {
     try {
       setLoading(true);
       setError('');
@@ -56,7 +52,11 @@ const BeginnerIssues = ({ owner, name }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [owner, name]);
+
+  useEffect(() => {
+    fetchIssues();
+  }, [fetchIssues]);
 
   const handleGenerateRoadmap = async (issueNumber) => {
     try {

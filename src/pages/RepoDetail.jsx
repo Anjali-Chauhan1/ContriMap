@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -27,11 +27,7 @@ const RepoDetail = () => {
   const [repoData, setRepoData] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
 
-  useEffect(() => {
-    fetchRepoData();
-  }, [owner, name]);
-
-  const fetchRepoData = async () => {
+  const fetchRepoData = useCallback(async () => {
     try {
       setLoading(true);
       const response = await repoAPI.getAnalysis(owner, name);
@@ -45,7 +41,11 @@ const RepoDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [owner, name]);
+
+  useEffect(() => {
+    fetchRepoData();
+  }, [fetchRepoData]);
 
   if (loading) {
     return (

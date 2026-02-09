@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback, memo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { 
   OrbitControls, 
@@ -184,21 +184,40 @@ const RobotBody = ({ mousePosition }) => {
   );
 };
 
-const InsightRobot = () => {
+const InsightRobot = memo(() => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = (event) => {
+  const handleMouseMove = useCallback((event) => {
     const x = (event.clientX / window.innerWidth) * 2 - 1;
     const y = -(event.clientY / window.innerHeight) * 2 + 1;
     setMousePosition({ x, y });
-  };
+  }, []);
 
   return (
     <div 
       className="w-full h-[600px] flex items-center justify-center bg-transparent"
       onMouseMove={handleMouseMove}
     >
-      <Canvas shadows dpr={[1, 2]} gl={{ alpha: true }}>
+      <Canvas 
+        shadows 
+        dpr={[1, 1.5]} 
+        performance={{ min: 0.5 }}
+        gl={{ 
+          alpha: true,
+          preserveDrawingBuffer: true,
+          powerPreference: 'high-performance'
+        }}
+        onCreated={({ gl }) => {
+          const canvas = gl.getContext().canvas;
+          canvas.addEventListener('webglcontextlost', (event) => {
+            event.preventDefault();
+            console.warn('WebGL context lost - InsightRobot');
+          }, false);
+          canvas.addEventListener('webglcontextrestored', () => {
+            console.log('WebGL context restored - InsightRobot');
+          }, false);
+        }}
+      >
         <PerspectiveCamera makeDefault position={[0, 8, 25]} fov={40} />
         
         <ambientLight intensity={0.7} />
@@ -226,6 +245,8 @@ const InsightRobot = () => {
       </Canvas>
     </div>
   );
-};
+});
+
+InsightRobot.displayName = 'InsightRobot';
 
 export default InsightRobot;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Loader2, 
@@ -15,11 +15,7 @@ const ContributionGuide = ({ owner, name }) => {
   const [error, setError] = useState('');
   const [guide, setGuide] = useState(null);
 
-  useEffect(() => {
-    fetchGuide();
-  }, [owner, name]);
-
-  const fetchGuide = async () => {
+  const fetchGuide = useCallback(async () => {
     try {
       setLoading(true);
       const response = await analysisAPI.getInsights(owner, name);
@@ -33,7 +29,11 @@ const ContributionGuide = ({ owner, name }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [owner, name]);
+
+  useEffect(() => {
+    fetchGuide();
+  }, [fetchGuide]);
 
   if (loading) {
     return (

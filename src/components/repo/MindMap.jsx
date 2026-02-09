@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import mermaid from 'mermaid';
 import { motion } from 'framer-motion';
 import { Loader2, AlertCircle, Download } from 'lucide-react';
@@ -25,26 +25,7 @@ const MindMap = ({ owner, name }) => {
   const [mermaidCode, setMermaidCode] = useState('');
   const mermaidRef = useRef(null);
 
-  useEffect(() => {
-    if (owner && name) {
-      fetchAnalysis();
-    }
-  }, [owner, name]);
-
-  useEffect(() => {
-    if (mermaidCode && mermaidRef.current) {
-      mermaidRef.current.innerHTML = '';
-
-      mermaid.render('mermaid-diagram', mermaidCode).then(({ svg }) => {
-        mermaidRef.current.innerHTML = svg;
-      }).catch((err) => {
-        console.error('Mermaid render error:', err);
-        setError('Failed to render flowchart');
-      });
-    }
-  }, [mermaidCode]);
-
-  const fetchAnalysis = async () => {
+  const fetchAnalysis = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -65,7 +46,26 @@ const MindMap = ({ owner, name }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [owner, name]);
+
+  useEffect(() => {
+    if (owner && name) {
+      fetchAnalysis();
+    }
+  }, [owner, name, fetchAnalysis]);
+
+  useEffect(() => {
+    if (mermaidCode && mermaidRef.current) {
+      mermaidRef.current.innerHTML = '';
+
+      mermaid.render('mermaid-diagram', mermaidCode).then(({ svg }) => {
+        mermaidRef.current.innerHTML = svg;
+      }).catch((err) => {
+        console.error('Mermaid render error:', err);
+        setError('Failed to render flowchart');
+      });
+    }
+  }, [mermaidCode]);
 
   const handleDownload = () => {
     const svgElement = mermaidRef.current?.querySelector('svg');

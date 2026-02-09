@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { 
   CheckCircle2, 
@@ -20,11 +20,7 @@ const PRChecklist = ({ owner, name }) => {
   const [error, setError] = useState('');
   const [checklist, setChecklist] = useState(null);
 
-  useEffect(() => {
-    fetchChecklist();
-  }, [owner, name]);
-
-  const fetchChecklist = async () => {
+  const fetchChecklist = useCallback(async () => {
     try {
       setLoading(true);
       const response = await repoAPI.getAnalysis(owner, name);
@@ -48,7 +44,11 @@ const PRChecklist = ({ owner, name }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [owner, name]);
+
+  useEffect(() => {
+    fetchChecklist();
+  }, [fetchChecklist]);
 
   if (loading) {
     return (

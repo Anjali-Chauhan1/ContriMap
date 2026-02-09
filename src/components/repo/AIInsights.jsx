@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Loader2, 
@@ -17,11 +17,7 @@ const AIInsights = ({ owner, name, detailed = false }) => {
   const [error, setError] = useState('');
   const [insights, setInsights] = useState(null);
 
-  useEffect(() => {
-    fetchInsights();
-  }, [owner, name]);
-
-  const fetchInsights = async () => {
+  const fetchInsights = useCallback(async () => {
     try {
       setLoading(true);
       const response = await analysisAPI.getInsights(owner, name);
@@ -35,7 +31,11 @@ const AIInsights = ({ owner, name, detailed = false }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [owner, name]);
+
+  useEffect(() => {
+    fetchInsights();
+  }, [fetchInsights]);
 
   if (loading) {
     return (

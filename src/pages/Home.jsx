@@ -32,27 +32,29 @@ const Home = ({ onIntroComplete }) => {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Hero Section with LaserFlow Background */}
+      {/* Hero Section  */}
       <section className="relative pt-32 pb-20 overflow-hidden min-h-screen">
         {/* LaserFlow Background */}
         <div className="absolute inset-x-0 bottom-[-27vh] pointer-events-none">
           <div className="relative h-[55vh]">
             <LaserFlow 
               color="#c3f7f9"
-              wispDensity={3.2}
-              fogIntensity={0.4}
-              wispSpeed={3}
-              flowSpeed={0.01}
+              wispDensity={1}
+              fogIntensity={1.25}
+              wispSpeed={15}
+              flowSpeed={0.03}
               horizontalBeamOffset={0.1}
               verticalBeamOffset={0.0}
-              horizontalSizing={6}
-              verticalSizing={7}
-              wispIntensity={5.7}
-              flowStrength={0.11}
-              fogScale={0.3}
-              fogFallSpeed={0.86}
-              decay={0.81}
-              falloffStart={2}
+              horizontalSizing={4}
+              verticalSizing={5}
+              wispIntensity={6.0}
+              flowStrength={0.25}
+              fogScale={0.2}
+              fogFallSpeed={0.7}
+              decay={1.1}
+              falloffStart={1.8}
+              dpr={0.8}
+              mouseSmoothTime={0.15}
             />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black via-black/80 to-transparent" />
           </div>
@@ -60,23 +62,27 @@ const Home = ({ onIntroComplete }) => {
         {/* LiquidEther hero aura */}
         <div
           className="pointer-events-none absolute "
-          //aria-hidden="true"
+          
         >
           <div
-            className="relative w-[min(150vw,1800px)] max-w-[1800px] -top-10 opacity-80 mix-blend-screen"
-            style={{ aspectRatio: '1 / 1', filter: 'drop-shadow(0 0 120px rgba(140,115,242,0.35))' }}
+            className="relative w-[min(1300vw,1800px)] max-w-[1500px] -top-10 opacity-60 mix-blend-screen"
+            style={{ aspectRatio: '1 / 1', filter: 'drop-shadow(0 0 80px rgba(140,115,242,0.25))' }}
           >
             <LiquidEther
-              mouseForce={6}
-              cursorSize={100}
+              mouseForce={8}
+              cursorSize={70}
               isViscous
-              viscous={30}
+              viscous={20}
               colors={["#8c73f2","#c8d4ee","#d9d0fb"]}
               autoDemo
-              autoSpeed={1.5}
-              autoIntensity={4.6}
+              autoSpeed={0.8}
+              autoIntensity={2.5}
               isBounce={false}
-              resolution={0.45}
+              resolution={0.25}
+              iterationsViscous={16}
+              iterationsPoisson={16}
+              dt={0.016}
+              BFECC={false}
               className="w-full h-full"
               style={{ width: '100%', height: '100%' }}
             />
